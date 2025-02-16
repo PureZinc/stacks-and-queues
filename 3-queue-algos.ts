@@ -1,4 +1,5 @@
 // BE SURE TO IMPORT YOUR QUEUE CLASS
+import { Queue } from "./1-queue";
 
 // ==============================
 // [1] Print the First `N` Numbers in Increasing Order using a Queue
@@ -16,7 +17,9 @@
 // console.log(printNumbers(3)); // Output: [1, 2, 3]
 // console.log(printNumbers(1)); // Output: [1]
 
-function printNumbers(n) {}
+function printNumbers(n) {
+    
+}
 
 // ==============================
 // [2] Reverse a Queue
@@ -55,7 +58,18 @@ function reverseQueue(queue) {}
 // console.log(generateFibonacci(5)); // Output: [0, 1, 1, 2, 3]
 // console.log(generateFibonacci(7)); // Output: [0, 1, 1, 2, 3, 5, 8]
 
-function generateFibonacci(n) {}
+function generateFibonacci(n) {
+    let ansList: number[] = [];
+    let queue = new Queue<number>([0, 1]);
+    while (ansList.length < n) {
+        queue.enqueue(queue.list.reduce((a, b) => a + b, 0));
+        const deq = queue.dequeue();
+        if (deq) {
+            ansList.push(deq);
+        }
+    }
+    return ansList;
+}
 
 // ==============================
 // [4] Reverse Words in a Sentence Using a Queue

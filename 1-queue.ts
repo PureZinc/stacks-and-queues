@@ -24,13 +24,52 @@
 // - Create a method to display the queue elements.
 // - Print elements in order, separated by "<-".
 
+
+export class Queue<T>{
+    constructor(
+        public list: T[] = []
+    ) { }
+    
+    print() {
+        for (const obj of this.list) {
+            console.log(obj);
+            console.log(' <- ')
+        }
+    }
+
+    enqueue = (elm: T) => {
+        this.list = [...this.list, elm]
+    }
+
+    dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        const first = this.front();
+        this.list = this.list.slice(1, this.list.length - 1);
+        return first;
+    }
+
+    front() {
+        return this.list[0] || null
+    }
+
+    isEmpty() {
+        return this.size() === 0;
+    }
+
+    size() {
+        return this.list.length;
+    }
+}
+
 // Uncomment The Code Below to See If It Works! Feel free to write more code to test and examine the functionality of the queue.
-// const queue = new Queue<number>(); // Create a queue that stores numbers
-// queue.enqueue(10);
-// queue.enqueue(20);
-// queue.enqueue(30);
-// queue.print(); // Output: 10 <- 20 <- 30
-// console.log(queue.dequeue()); // 10
-// console.log(queue.front()); // 20
-// console.log(queue.size()); // 2
-// console.log(queue.isEmpty()); // false
+const queue = new Queue<number>(); // Create a queue that stores numbers
+queue.enqueue(10);
+queue.enqueue(20);
+queue.enqueue(30);
+queue.print(); // Output: 10 <- 20 <- 30
+console.log(queue.dequeue()); // 10
+console.log(queue.front()); // 20
+console.log(queue.size()); // 2
+console.log(queue.isEmpty()); // false

@@ -24,13 +24,48 @@
 // - Create a method to display the stack elements.
 // - Print elements in order, separated by " | " with the top of the stack on the right.
 
+class Stack<T> {
+    constructor(
+        public list: T[] = []
+    ) { }
+    
+    print() {
+        for (const obj of this.list) {
+            console.log(obj);
+            console.log(" | ");
+        }
+    }
+
+    push(elm: T) {
+        this.list.push(elm);
+    }
+
+    pop() {
+        const first = this.peek();
+        this.list = this.list.slice(0, this.size() - 2);
+        return first;
+    }
+
+    peek() {
+        return this.size() === 0 ? null : this.list[this.size() - 1]
+    }
+
+    isEmpty() {
+        return this.size() === 0;
+    }
+
+    size() {
+        return this.list.length;
+    }
+}
+
 // Uncomment The Code Below to See If It Works! Feel free to write more code to test and examine the functionality of the stack.
-// const stack = new Stack<number>(); // Create a stack that stores numbers
-// stack.push(10);
-// stack.push(20);
-// stack.push(30);
-// stack.print(); // Output: 10 | 20 | 30
-// console.log(stack.pop()); // 30
-// console.log(stack.peek()); // 20
-// console.log(stack.size()); // 2
-// console.log(stack.isEmpty()); // false
+const stack = new Stack<number>(); // Create a stack that stores numbers
+stack.push(10);
+stack.push(20);
+stack.push(30);
+stack.print(); // Output: 10 | 20 | 30
+console.log(stack.pop()); // 30
+console.log(stack.peek()); // 20
+console.log(stack.size()); // 2
+console.log(stack.isEmpty()); // false
