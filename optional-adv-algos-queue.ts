@@ -106,9 +106,9 @@ const orangesRotting = (orangeMatrix: OrangeMatrix) => {
             let visited = new Set();
             let distanceList = {};
 
-            visited.add(rotten);
             for (let orange of rotten) {
                 distanceList[orange] = 0;
+                visited.add(orange);
             }
 
             let maxDistance = 0;
