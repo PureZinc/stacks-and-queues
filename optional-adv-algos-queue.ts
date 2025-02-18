@@ -1,4 +1,6 @@
 // BE SURE TO IMPORT YOUR QUEUE CLASS
+import { Queue } from "./1-queue";
+import { Stack } from "./2-stack";
 
 // ==============================
 // 1️⃣ Implement a Recent Calls Counter
@@ -41,6 +43,96 @@
 // ==============================
 // Given a 2D grid where `0` is an empty cell, `1` is a fresh orange, and `2` is a rotten orange,
 // determine the minimum number of minutes needed for all fresh oranges to rot. Use BFS with a queue.
+
+type OrangeMatrix = Array<Array<0 | 1 | 2>>
+const orangesRotting = (orangeMatrix: OrangeMatrix) => {
+    class Oranges {
+        constructor(
+            private matrix: OrangeMatrix
+        ) { }
+        
+        size() {
+            return [this.matrix.length, this.matrix[0].length];
+        }
+
+        posAsString(row: number, col: number): string {
+            return `${this.matrix[row][col]} ${row},${col}`
+        }
+
+        getAllRotten() {
+            let rotten: string[] = [];
+            for (let i = 0; i < this.matrix.length; i++) {
+                for (let j = 0; j < this.matrix[0].length; j++) {
+                    if (this.matrix[i][j] === 2) {
+                        rotten.push(this.posAsString(i, j));
+                    }
+                }
+            }
+            return rotten;
+        }
+
+        asAdjacencyList() {
+            let adjacencyList = {};
+            let [rows, cols] = this.size();
+            let directions = [
+                [-1, 0], [1, 0], [0, -1], [0, 1]
+            ];
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (this.matrix[r][c] !== 0) {
+                        let node = this.posAsString(r, c);
+                        adjacencyList[node] = [];
+
+                        for (let [dr, dc] of directions) {
+                            let nr = r + dr, nc = c + dc;
+
+                            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && this.matrix[nr][nc] !== 0) {
+                                let neighbor = this.posAsString(nr, nc);
+                                adjacencyList[node].push(neighbor);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return adjacencyList;
+        }
+
+        bfs() {
+            const adjacencyList = this.asAdjacencyList();
+            const rotten = this.getAllRotten();
+            let queue = new Queue(rotten);
+            let visited = new Set();
+            let distanceList = {};
+
+            visited.add(rotten);
+            for (let orange of rotten) {
+                distanceList[orange] = 0;
+            }
+
+            let maxDistance = 0;
+            while (queue.size()) {
+                let orange = queue.dequeue();
+
+                if (orange) {
+                    for (let neighbor of adjacencyList[orange]) {
+                        if (!visited.has(neighbor)) {
+                            visited.add(neighbor);
+                            queue.enqueue(neighbor);
+                            distanceList[neighbor] = distanceList[orange] + 1;
+                            maxDistance = Math.max(maxDistance, distanceList[neighbor]);
+                        }
+                    }
+                }
+            }
+
+            return [distanceList, maxDistance];
+        }
+    }  
+    const oranges = new Oranges(orangeMatrix);
+    return oranges.bfs()[1];
+}
 
 // Example Test Cases:
 // orangesRotting([[2,1,1],[1,1,0],[0,1,1]]) // 4

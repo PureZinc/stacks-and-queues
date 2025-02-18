@@ -1,10 +1,23 @@
 // BE SURE TO IMPORT YOUR STACK CLASS
+import { Stack } from "./2-stack";
 
 // ==============================
 // 1️⃣ Reverse a String Using a Stack
 // ==============================
 // Write a function that takes a string as input and returns the reversed string using a stack.
 // You may only use stack operations (`push`, `pop`, `isEmpty`).
+
+const reverseString = (str: string) => {
+    let stack = new Stack<string>();
+    for (const char of str) {
+        stack.push(char);
+    }
+    let newStr = "";
+    for (let i = 0; i < str.length; i++) {
+        newStr = `${newStr}${stack.pop()}`;
+    }
+    return newStr;
+}
 
 // Example Test Cases:
 // reverseString("hello") // "olleh"
@@ -18,6 +31,25 @@
 // Given a string containing only the characters `()`, `{}`, and `[]`,
 // write a function to determine if the string is valid.
 // A string is valid if brackets are closed in the correct order. Use a stack to track open brackets.
+
+const isValidParentheses = (str: string) => {
+    const startParenths = ['(', '[', '{'];
+    const endParenths = [')', ']', '}'];
+    let stack = new Stack<string>();
+    for (const char of str) {
+        if (startParenths.includes(char)) {
+            stack.push(char);
+        } else if (endParenths.includes(char)) {
+            const peek = stack.peek();
+            if (peek && startParenths.indexOf(peek) === endParenths.indexOf(char)) {
+                stack.pop();
+            } else {
+                return false;
+            }
+        }
+    }
+    return stack.isEmpty();
+}
 
 // Example Test Cases:
 // isValidParentheses("({[]})") // true
